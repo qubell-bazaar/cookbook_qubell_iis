@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: cookbook_qubell_iis
-# Recipe:: pool_management 
+# Recipe:: site_management 
 #
 # Copyright 2014, QUBELL
 #
@@ -9,8 +9,31 @@
 
 include_recipe "cookbook_qubell_iis"
 
-iis_site "#{node[:cookbook_qubell_iis][:site][:name]}" do
-  product_id node[:cookbook_qubell_iis][:site][:product_id]
+
+if node[:cookbook_qubell_iis][:site_name].empty? 
+  node.set[:cookbook_qubell_iis][:site_name]=nil
+end
+if node[:cookbook_qubell_iis][:site][:host_header].empty?
+  node.set[:cookbook_qubell_iis][:site][:host_header]=nil
+end
+if node[:cookbook_qubell_iis][:site][:bindings].empty?
+  node.set[:cookbook_qubell_iis][:site][:bindings]=nil
+end
+if node[:cookbook_qubell_iis][:site][:application_pool].empty?
+  node.set[:cookbook_qubell_iis][:site][:application_pool]=nil
+end
+if node[:cookbook_qubell_iis][:site][:options].empty? 
+  node.set[:cookbook_qubell_iis][:site][:options]=nil
+end
+
+directory "#{node[:cookbook_qubell_iis][:site][:path]}" do
+  recursive true
+  owner node[:current_user]
+  mode '755'
+  action :create
+end
+
+iis_site "#{node[:cookbook_qubell_iis][:site_name]}" do
   site_id node[:cookbook_qubell_iis][:site][:site_id]
   path node[:cookbook_qubell_iis][:site][:path]
   protocol node[:cookbook_qubell_iis][:site][:protocol]

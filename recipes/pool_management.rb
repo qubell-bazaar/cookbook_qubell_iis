@@ -9,7 +9,17 @@
 
 include_recipe "cookbook_qubell_iis"
 
-iis_pool "#{node[:cookbook_qubell_iis][:pool][:name]}" do
+if ( node[:cookbook_qubell_iis][:pool_name].empty?)
+  node.set[:cookbook_qubell_iis][:pool_name] = nil
+end
+if (node[:cookbook_qubell_iis][:pool][:pool_username].empty?)
+  node.set[:cookbook_qubell_iis][:pool][:pool_username]=nil
+end
+if (node[:cookbook_qubell_iis][:pool][:pool_password].empty?)
+  node.set[:cookbook_qubell_iis][:pool][:pool_password]=nil
+end
+
+iis_pool "#{node[:cookbook_qubell_iis][:pool_name]}" do
   runtime_version node[:cookbook_qubell_iis][:pool][:runtime_version]
   worker_idle_timeout node[:cookbook_qubell_iis][:pool][:worker_idle_timeout]
   private_mem node[:cookbook_qubell_iis][:pool][:private_mem]

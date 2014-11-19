@@ -36,6 +36,10 @@ include_recipe "iis::mod_compress_dynamic"
 include_recipe "iis::mod_compress_static"
 include_recipe "iis::mod_iis6_metabase_compat"
 
+iis_site "Default Web Site" do
+  action :delete
+end
+
 powershell_script "disable_firewall" do
   flags "-ExecutionPolicy Unrestricted"
   code <<-EOH
