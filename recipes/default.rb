@@ -15,13 +15,6 @@ windows_features.each do |f|
   end
 end
 
-powershell_script "Install Web-Asp-Net45" do
-  flags "-ExecutionPolicy Unrestricted"
-  code <<-EOH
-    Add-WindowsFeature  Web-Asp-Net45
-  EOH
-end
-
 include_recipe "iis"
 include_recipe "iis::mod_aspnet"
 include_recipe "iis::mod_isapi"
