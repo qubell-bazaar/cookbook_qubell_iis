@@ -15,13 +15,6 @@ windows_features.each do |f|
   end
 end
 
-powershell_script "Install Web-Asp-Net45" do
-  flags "-ExecutionPolicy Unrestricted"
-  code <<-EOH
-    Add-WindowsFeature  Web-Asp-Net45
-  EOH
-end
-
 include_recipe "iis"
 include_recipe "iis::mod_aspnet"
 include_recipe "iis::mod_isapi"
@@ -36,9 +29,7 @@ include_recipe "iis::mod_compress_dynamic"
 include_recipe "iis::mod_compress_static"
 include_recipe "iis::mod_iis6_metabase_compat"
 
-iis_site "Default Web Site" do
-  action :delete
-end
+include_recipe "iis::remove_default_site"
 
 powershell_script "disable_firewall" do
   flags "-ExecutionPolicy Unrestricted"
